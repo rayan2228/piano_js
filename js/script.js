@@ -6,7 +6,7 @@ const volumeValueElm = document.querySelector(".volumeValue");
 
 // initial data
 let callAudio = (filename = a) => {
-  let audio = new Audio(`/tunes${filename}.wav`);
+  let audio = new Audio(`./tunes${filename}.wav`);
   audio.volume = volumeMeterElm.value / 100;
   audio.currentTime = 0;
   audio.play();
@@ -34,7 +34,6 @@ keysElmArr.map((key) => {
     let keyboardKey = event.key.toLowerCase();
     if (datasetKeyValue === keyboardKey) {
       callAudio(datasetKeyValue);
-      console.log(key.classList);
     }
   });
 });
