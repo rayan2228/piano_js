@@ -26,7 +26,15 @@ function volumeUpDown() {
 volumeMeterElm.addEventListener("change", volumeUpDown);
 
 keysElmArr.map((key) => {
+  let datasetKeyValue = key.dataset.key.toLowerCase();
   key.addEventListener("click", function () {
-    callAudio(key.dataset.key);
+    callAudio(datasetKeyValue);
+  });
+  document.addEventListener("keypress", function (event) {
+    let keyboardKey = event.key.toLowerCase();
+    if (datasetKeyValue === keyboardKey) {
+      callAudio(datasetKeyValue);
+      console.log(key.classList);
+    }
   });
 });
