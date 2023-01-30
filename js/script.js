@@ -1,4 +1,4 @@
-// select the dom elemets
+// select the dom elements
 const keysElm = document.querySelectorAll(".keys");
 const keysElmArr = Array.from(keysElm);
 const volumeMeterElm = document.querySelector(".volumeMeter");
@@ -25,14 +25,37 @@ function volumeUpDown() {
 // event handle
 volumeMeterElm.addEventListener("change", volumeUpDown);
 
+// play the piano
 keysElmArr.map((key) => {
   let datasetKeyValue = key.dataset.key.toLowerCase();
-  key.addEventListener("click", function () {
+  key.addEventListener("click", function (event) {
+    if (key.classList.contains("text-white")) {
+      key.style.backgroundImage = "linear-gradient(#333, #000)";
+      key.style.backgroundImage = "linear-gradient(to bottom, #000, #434343)";
+    } else {
+      key.style.backgroundImage = "linear-gradient(#fff 96%, #eee 4%)";
+      key.style.backgroundImage =
+        "linear-gradient(to bottom, #fff 0%, #eee 100%)";
+    }
+    setTimeout(() => {
+      key.removeAttribute("style");
+    }, 200);
     callAudio(datasetKeyValue);
   });
   document.addEventListener("keypress", function (event) {
     let keyboardKey = event.key.toLowerCase();
     if (datasetKeyValue === keyboardKey) {
+      if (key.classList.contains("text-white")) {
+        key.style.backgroundImage = "linear-gradient(#333, #000)";
+        key.style.backgroundImage = "linear-gradient(to bottom, #000, #434343)";
+      } else {
+        key.style.backgroundImage = "linear-gradient(#fff 96%, #eee 4%)";
+        key.style.backgroundImage =
+          "linear-gradient(to bottom, #fff 0%, #eee 100%)";
+      }
+      setTimeout(() => {
+        key.removeAttribute("style");
+      }, 200);
       callAudio(datasetKeyValue);
     }
   });
