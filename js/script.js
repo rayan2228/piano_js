@@ -11,7 +11,7 @@ let callAudio = (filename = a) => {
   audio.currentTime = 0;
   audio.play();
 };
-
+volumeValueElm.textContent = volumeMeterElm.value;
 // volume up down function
 function volumeUpDown() {
   if (volumeMeterElm.value < 0) {
