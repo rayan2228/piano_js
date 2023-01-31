@@ -3,6 +3,10 @@ const keysElm = document.querySelectorAll(".keys");
 const keysElmArr = Array.from(keysElm);
 const volumeMeterElm = document.querySelector(".volumeMeter");
 const volumeValueElm = document.querySelector(".volumeValue");
+const screenRecordElm = document.querySelector(".screenRecord");
+const downloadScreenRecordElm = document.querySelector(".downloadScreenRecord");
+
+let mediaChunks = [];
 
 // initial data
 let callAudio = (filename = a) => {
@@ -24,6 +28,7 @@ function volumeUpDown() {
 
 // event handle
 volumeMeterElm.addEventListener("change", volumeUpDown);
+screenRecordElm.addEventListener("click", setupStream);
 
 // play the piano
 keysElmArr.map((key) => {
@@ -60,3 +65,37 @@ keysElmArr.map((key) => {
     }
   });
 });
+
+// screen recording
+async function setupStream() {
+  try {
+    let stream = await navigator.mediaDevices.getDisplayMedia({
+      video: true,
+    });
+    // audio = await navigator.mediaDevices.getUserMedia({
+    //   audio: {
+    //     echoCancellation: true,
+    //     noiseSuppression: true,
+    //     sampleRate: 44100,
+    //   },
+    // });
+    streamData(stream);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function streamData(stream) {
+  // let mixedStream = new MediaStream(stream, audio);
+  let mediaRecorder = await new MediaRecorder(stream);
+  mediaRecorder.addEventListener("dataavailable", function (e) {
+    mediaChunks.push(e.data);
+  });
+  mediaRecorder.addEventListener("stop", function () {
+    let blob = new Blob(mediaChunks, { type: "video/mp4" });
+    downloadScreenRecordElm.href = URL.createObjectURL(blob);
+    downloadScreenRecordElm.download = "video.mp4";
+    downloadScreenRecordElm.click();
+  });
+  mediaRecorder.start();
+}
